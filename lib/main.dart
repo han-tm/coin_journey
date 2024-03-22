@@ -1,4 +1,7 @@
+import 'package:coin_journey/features/markets/presentation/bloc/market_bloc.dart';
+import 'package:coin_journey/features/markets/presentation/bloc/market_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'config/routes/routes.dart';
 import 'config/theme/app_theme.dart';
 import 'di.dart';
@@ -19,6 +22,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme(),
         onGenerateRoute: AppRoutes.onGenerateRoutes,
-        home: const Home());
+        home: BlocProvider<MarketBloc>(
+          create: (context) => sl()..add(const GetMarkets()),
+          child: const Home()));
   }
 }

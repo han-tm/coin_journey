@@ -1,49 +1,26 @@
-
+import 'package:coin_journey/features/markets/data/data_sources/remote/market_api_service.dart';
+import 'package:coin_journey/features/markets/domain/repository/market_repository.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+
+import 'features/markets/data/repository/market_repository_imp.dart';
+import 'features/markets/domain/usecases/get_matket.dart';
+import 'features/markets/presentation/bloc/market_bloc.dart';
 
 final sl = GetIt.instance;
 
 Future<void> initializeDependencies() async {
+  // Dio
+  sl.registerSingleton<Dio>(Dio());
 
-  // final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-  // sl.registerSingleton<AppDatabase>(database);
-  
-  // // Dio
-  // sl.registerSingleton<Dio>(Dio());
+  // Dependencies
+  sl.registerSingleton<MarketApiService>(MarketApiServiceImpl(dio: sl()));
 
-  // // Dependencies
-  // sl.registerSingleton<NewsApiService>(NewsApiService(sl()));
+  sl.registerSingleton<MarketRepository>(MarketRepositoryImp(sl()));
 
-  // sl.registerSingleton<ArticleRepository>(
-  //   ArticleRepositoryImpl(sl(),sl())
-  // );
-  
-  // //UseCases
-  // sl.registerSingleton<GetArticleUseCase>(
-  //   GetArticleUseCase(sl())
-  // );
+  //UseCases
+  sl.registerSingleton<GetMarketsUseCase>(GetMarketsUseCase(sl()));
 
-  // sl.registerSingleton<GetSavedArticleUseCase>(
-  //   GetSavedArticleUseCase(sl())
-  // );
-
-  // sl.registerSingleton<SaveArticleUseCase>(
-  //   SaveArticleUseCase(sl())
-  // );
-  
-  // sl.registerSingleton<RemoveArticleUseCase>(
-  //   RemoveArticleUseCase(sl())
-  // );
-
-
-  // //Blocs
-  // sl.registerFactory<RemoteArticlesBloc>(
-  //   ()=> RemoteArticlesBloc(sl())
-  // );
-
-  // sl.registerFactory<LocalArticleBloc>(
-  //   ()=> LocalArticleBloc(sl(),sl(),sl())
-  // );
-
-
+  //Blocs
+  sl.registerFactory<MarketBloc>(() => MarketBloc(sl()));
 }
